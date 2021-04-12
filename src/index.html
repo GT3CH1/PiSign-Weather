@@ -5,32 +5,87 @@
             src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
     <title>West Lake Weather</title>
     <script>
         var weather;
+        var desc;
         var icon;
         var temp;
         var jsonResponse;
-        function processData(){
-            $('#wicon').attr('src','http://openweathermap.org/img/w/'+icon+'.png');
-            
+        var feelslike;
+        var wind;
+        var winddirection;
+        var tempmax;
+        var tempmin;
+
+        function getWeatherIcon(id) {
+            return "http://openweathermap.org/img/w/" + id + ".png";
         }
-        $.getJSON( "https://openweathermap.org/data/2.5/weather?id=5780993&units=imperial&appid=439d4b804bc8187953eb36d2a8c26a02", function( data ) {
+
+        function processData() {
+            console.log(icon);
+            $('#wicon').attr('src', getWeatherIcon(icon));
+            $('#weather').text(weather);
+            $('#desc').text(desc);
+            $('#temp').text(temp);
+            $('#tempmin').text(tempmin);
+            $('#tempmax').text(tempmax);
+            $('#feelslike').text(feelslike);
+            // Insert the amount of degrees here
+            degrees = winddirection;
+
+            // Define array of directions
+            directions = ['north', 'northeast', 'east', 'southeast', 'south', 'southwest', 'west', 'northwest'];
+
+            // Split into the 8 directions
+            degrees = degrees * 8 / 360;
+
+            // round to nearest integer.
+            degrees = Math.round(degrees, 0);
+
+            // Ensure it's within 0-7
+            degrees = (degrees + 8) % 8
+
+            $('#wind').text(wind);
+            $('#winddirection').text(directions[degrees]);
+            $('#body').fadeIn(300);
+        }
+
+        $.getJSON("https://openweathermap.org/data/2.5/weather?id=5780993&units=imperial&appid=439d4b804bc8187953eb36d2a8c26a02", function (data) {
             jsonResponse = data;
             icon = jsonResponse['weather'][0]['icon'];
             weather = jsonResponse['weather'][0]['main'];
             temp = jsonResponse['main']['temp'];
+            tempmax = jsonResponse['main']['temp_max'];
+            tempmin = jsonResponse['main']['temp_min'];
+            desc = jsonResponse['weather'][0]['description'];
+            feelslike = jsonResponse['main']['feels_like'];
+            wind = jsonResponse['wind']['speed'];
+            winddirection = jsonResponse['wind']['deg'];
             processData();
         });
-        
-        function getWeatherIcon(id){
-            return "http://openweathermap.org/img/w/" + id + ".png";
-        }
+
 
     </script>
 </head>
-<body>
-    <body ></body>
-    <div id="icon"><img id="wicon" src="" alt="Weather icon"></div>
+<body style="display: none;" id="body">
+<br>
+<div style="width: 12.5%;float: left">&nbsp;</div>
+<div class="w3-threequarter w3-display-middle w3-blue w3-card-4">
+    <div style="padding:32px;font-size:56px;">
+        Current Weather <img id="wicon" src="" alt="Weather icon"
+                             style="width:100px;float:right;">
+        <hr>
+        <div>
+            <span><span id="weather"></span>, <span id="desc"></span>.</span>
+            <br>
+            <span>Currently <span id="temp"></span>&deg;F<br>Feels like <span id="feelslike"></span>&deg;F</span><br>
+            <span>High: <span id="tempmax"></span>&deg;F<br> Low: <span id="tempmin"></span>&deg;F</span><br>
+            <span>Wind: <span id="wind"></span> mph, from the <span id="winddirection"></span>. </span>
+        </div>
+    </div>
+    <br>
+</div>
 </body>
 </html>
