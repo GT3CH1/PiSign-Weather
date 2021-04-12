@@ -1,10 +1,23 @@
-<html>
+<html lang="en">
 <head>
     <!--    https://openweathermap.org/data/2.5/weather?id=5780993&units=metric&appid=439d4b804bc8187953eb36d2a8c26a02-->
     <script
             src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
             crossorigin="anonymous"></script>
+    <title>West Lake Weather</title>
+    <script>
+        $.getJSON( "https://openweathermap.org/data/2.5/weather?id=5780993&units=metric&appid=439d4b804bc8187953eb36d2a8c26a02", function( data ) {
+            var items = [];
+            $.each( data, function( key, val ) {
+                items.push( "<li id='" + key + "'>" + val + "</li>" );
+            });
 
+            $( "<ul/>", {
+                "class": "my-new-list",
+                html: items.join( "" )
+            }).appendTo( "body" );
+        });
+    </script>
 </head>
 </html>
