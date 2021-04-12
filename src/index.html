@@ -7,17 +7,30 @@
             crossorigin="anonymous"></script>
     <title>West Lake Weather</title>
     <script>
-        $.getJSON( "https://openweathermap.org/data/2.5/weather?id=5780993&units=metric&appid=439d4b804bc8187953eb36d2a8c26a02", function( data ) {
-            var items = [];
-            $.each( data, function( key, val ) {
-                items.push( "<li id='" + key + "'>" + val + "</li>" );
-            });
-
-            $( "<ul/>", {
-                "class": "my-new-list",
-                html: items.join( "" )
-            }).appendTo( "body" );
+        var weather;
+        var icon;
+        var temp;
+        var jsonResponse;
+        function processData(){
+            $('#wicon').attr('src','http://openweathermap.org/img/w/'+icon+'.png');
+            
+        }
+        $.getJSON( "https://openweathermap.org/data/2.5/weather?id=5780993&units=imperial&appid=439d4b804bc8187953eb36d2a8c26a02", function( data ) {
+            jsonResponse = data;
+            icon = jsonResponse['weather'][0]['icon'];
+            weather = jsonResponse['weather'][0]['main'];
+            temp = jsonResponse['main']['temp'];
+            processData();
         });
+        
+        function getWeatherIcon(id){
+            return "http://openweathermap.org/img/w/" + id + ".png";
+        }
+
     </script>
 </head>
+<body>
+    <body ></body>
+    <div id="icon"><img id="wicon" src="" alt="Weather icon"></div>
+</body>
 </html>
