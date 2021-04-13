@@ -28,10 +28,10 @@
             $('#wicon').attr('src', getWeatherIcon(icon));
             $('#weather').text(weather);
             $('#desc').text(desc);
-            $('#temp').text(temp);
-            $('#tempmin').text(tempmin);
-            $('#tempmax').text(tempmax);
-            $('#feelslike').text(feelslike);
+            $('#temp').text(Math.round(temp));
+            $('#tempmin').text(Math.round(tempmin));
+            $('#tempmax').text(Math.round(tempmax));
+            $('#feelslike').text(Math.round(feelslike));
             // Insert the amount of degrees here
             degrees = winddirection;
 
@@ -47,7 +47,7 @@
             // Ensure it's within 0-7
             degrees = (degrees + 8) % 8
 
-            $('#wind').text(wind);
+            $('#wind').text(Math.round(wind));
             $('#winddirection').text(directions[degrees]);
             $('#body').fadeIn(300);
         }
